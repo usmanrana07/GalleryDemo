@@ -3,4 +3,5 @@
     <string name="title_gallery_permission">إذن المعرض</string>
     <string name="desc_gallery_permission">يرجى السماح لنا بالوصول إلى معرض الصور الخاص بك حتى نتمكن من عرض الوسائط لك هنا. ستكون قادرًا على عرض جميع المجلدات والصور أو مقاطع الفيديو الموجودة بداخلها.</string>
     <string name="allow">السماح</string>
+    <string name="content_description">ظفري</string>
 </resources>

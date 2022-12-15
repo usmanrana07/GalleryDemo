@@ -20,4 +20,13 @@
         <item name="postSplashScreenTheme">@style/Theme.GalleryDemo</item>
     </style>
 
+
+    <style name="RoundedShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="ShapeAppearance.FolderThumbnail" parent="RoundedShapeAppearance">
+        <item name="cornerSize">@dimen/item_folder_thumbnail_radius</item>
+    </style>
+
 </resources>

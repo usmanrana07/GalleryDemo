@@ -5,4 +5,8 @@
     <dimen name="permission_view_horizontal_spacing">30dp</dimen>
     <dimen name="toggle_folders_view_width">61dp</dimen>
     <dimen name="toggle_folders_view_height">31dp</dimen>
+    <dimen name="item_folder_text">13sp</dimen>
+    <dimen name="item_folder_text_margin">7dp</dimen>
+    <dimen name="item_folder_thumbnail_size">54dp</dimen>
+    <dimen name="item_folder_thumbnail_radius">5dp</dimen>
 </resources>
