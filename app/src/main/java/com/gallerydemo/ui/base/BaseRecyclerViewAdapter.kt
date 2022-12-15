@@ -1,7 +1,10 @@
 package com.gallerydemo.ui.base
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerViewAdapter<T : BaseViewHolder> : RecyclerView.Adapter<T>() {
@@ -21,6 +24,17 @@ abstract class BaseRecyclerViewAdapter<T : BaseViewHolder> : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: T, position: Int) {
         holder.onBind(position)
+    }
+
+    protected fun <T : ViewDataBinding> bindRecyclerViewItem(parent: ViewGroup, layoutId: Int): T {
+        return DataBindingUtil.inflate<T>(
+            LayoutInflater.from(parent.context),
+            layoutId,
+            parent,
+            false
+        ).apply {
+            lifecycleOwner = parent.findViewTreeLifecycleOwner()
+        }
     }
 
     protected class EmptyItemViewHolder<VB : ViewDataBinding>(

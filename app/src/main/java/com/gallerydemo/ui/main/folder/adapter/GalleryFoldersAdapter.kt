@@ -1,11 +1,10 @@
 package com.gallerydemo.ui.main.folder.adapter
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.gallerydemo.BR
+import com.gallerydemo.R
 import com.gallerydemo.databinding.ItemFoldersEmptyViewBinding
 import com.gallerydemo.databinding.ItemGridFolderViewBinding
 import com.gallerydemo.databinding.ItemLinearFolderViewBinding
@@ -47,34 +46,34 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     }
 
     override fun createNormalItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        return if (isGridView) createGridItemViewHolder(parent) else createLinearItemViewHolder(
-            parent
-        )
+        return if (isGridView)
+            createGridItemViewHolder(parent)
+        else
+            createLinearItemViewHolder(parent)
     }
 
     private fun createGridItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        val itemBinding: ItemGridFolderViewBinding = ItemGridFolderViewBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
+        return FolderGridItemViewHolder(
+            bindRecyclerViewItem(
+                parent,
+                R.layout.item_grid_folder_view
+            ), listener = this
         )
-        itemBinding.lifecycleOwner = parent.findViewTreeLifecycleOwner()
-
-        return FolderGridItemViewHolder(itemBinding, this)
     }
 
     private fun createLinearItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        val itemBinding: ItemLinearFolderViewBinding = ItemLinearFolderViewBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
+        return FolderLinearItemViewHolder(
+            bindRecyclerViewItem(
+                parent,
+                R.layout.item_linear_folder_view
+            ), listener = this
         )
-        itemBinding.lifecycleOwner = parent.findViewTreeLifecycleOwner()
-        return FolderLinearItemViewHolder(itemBinding, this)
     }
 
     override fun createEmptyItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        val itemBinding: ItemFoldersEmptyViewBinding = ItemFoldersEmptyViewBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
+        val itemBinding: ItemFoldersEmptyViewBinding = bindRecyclerViewItem(
+            parent,
+            R.layout.item_folders_empty_view
         )
         return EmptyItemViewHolder(itemBinding)
     }
