@@ -7,7 +7,7 @@ import com.gallerydemo.utils.printLog
 
 class GalleryFoldersViewModel : ViewModel() {
 
-    var enableColumnSwitching: MutableLiveData<Boolean> = MutableLiveData()
+    var enableColumnSwitching: MutableLiveData<Boolean> = MutableLiveData(true)
     var folderModeObservable: FoldersModeObservable = FoldersModeObservable(
         false
     ) { showLinear: Boolean ->

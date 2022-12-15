@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/navigation_permission">
+
+    <fragment
+        android:id="@+id/navigation_permission"
+        android:name="com.gallerydemo.ui.main.permission.PermissionFragment"
+        tools:layout="@layout/fragment_permission" />
+
+    <fragment
+        android:id="@+id/navigation_folders"
+        android:name="com.gallerydemo.ui.main.folder.GalleryFoldersFragment"
+        tools:layout="@layout/fragment_gallery_folders" />
+
+    <fragment
+        android:id="@+id/navigation_media"
+        android:name="com.gallerydemo.ui.main.media.MediaListFragment"
+        tools:layout="@layout/fragment_media_list" />
+</navigation>

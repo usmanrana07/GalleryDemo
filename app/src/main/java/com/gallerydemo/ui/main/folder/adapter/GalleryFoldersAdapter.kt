@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.gallerydemo.BR
 import com.gallerydemo.R
+import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.databinding.ItemFoldersEmptyViewBinding
 import com.gallerydemo.databinding.ItemGridFolderViewBinding
 import com.gallerydemo.databinding.ItemLinearFolderViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
 import com.gallerydemo.ui.base.BaseViewHolder
-import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.utils.printLog
 import javax.inject.Inject
 
@@ -18,6 +18,8 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     GalleryFoldersViewHolderInterface {
 
     private val dataList: MutableList<GalleryFolder> = mutableListOf()
+    val isListEmpty: Boolean
+    get() = dataList.isEmpty()
     var isGridView = true
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -42,6 +44,13 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
 
     override fun onItemClick() {
         printLog("usm_gallery", "folder is clicked")
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            dataList.isEmpty() -> viewTypeEmpty
+            else -> viewTypeNormal
+        }
     }
 
     override fun createNormalItemViewHolder(parent: ViewGroup): BaseViewHolder {

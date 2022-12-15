@@ -9,4 +9,5 @@
     <dimen name="item_folder_text_margin">7dp</dimen>
     <dimen name="item_folder_thumbnail_size">54dp</dimen>
     <dimen name="item_folder_thumbnail_radius">5dp</dimen>
+    <dimen name="grid_media_item_spacing">5dp</dimen>
 </resources>

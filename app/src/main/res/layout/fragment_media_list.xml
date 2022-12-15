@@ -9,20 +9,21 @@
 
         <variable
             name="viewModel"
-            type="com.gallerydemo.ui.main.MainViewModel" />
+            type="com.gallerydemo.ui.main.media.MediaListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMedia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="@integer/media_grid_span_count"
+            tools:listitem="@layout/item_video_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

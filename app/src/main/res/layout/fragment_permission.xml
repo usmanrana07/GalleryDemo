@@ -9,21 +9,23 @@
 
         <variable
             name="viewModel"
-            type="com.gallerydemo.ui.main.MainViewModel" />
+            type="com.gallerydemo.ui.main.permission.PermissionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.main.MainFragment">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment_activity_main_navigation"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <com.gallerydemo.ui.custom.PermissionDetailView
+            android:id="@+id/permissionView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/main_navigation" />
+            android:layout_height="wrap_content"
+            android:text="@string/desc_gallery_permission"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onAllowClick="@{()->viewModel.onAllowClicked()}"
+            app:title="@string/title_gallery_permission" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

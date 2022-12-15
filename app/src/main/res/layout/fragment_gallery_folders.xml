@@ -9,14 +9,24 @@
 
         <variable
             name="viewModel"
-            type="com.gallerydemo.ui.main.MainViewModel" />
+            type="com.gallerydemo.ui.main.folder.GalleryFoldersViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment">
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFolders"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleFoldersMode"
+            app:spanCount="@integer/folders_grid_span_count"
+            tools:listitem="@layout/item_grid_folder_view" />
 
         <ToggleButton
             android:id="@+id/toggleFoldersMode"
@@ -28,17 +38,8 @@
             android:checked="@={viewModel.folderModeObservable.checked}"
             android:textOff=""
             android:textOn=""
-            android:visibility="@{viewModel.enableColumnSwitching?View.VISIBLE:View.GONE,default=gone}"
+            android:visibility="@{viewModel.enableColumnSwitching?View.VISIBLE:View.GONE,default=visible}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMedia"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/toggleFoldersMode"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

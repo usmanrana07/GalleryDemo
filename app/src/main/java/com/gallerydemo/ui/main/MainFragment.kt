@@ -14,7 +14,6 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(R.layout.f
         fun newInstance() = MainFragment()
     }
 
-    private val permissionsHelper: PermissionsHelper by lazy { PermissionsHelper(this) }
 
     override fun getBindingVariable(): Int {
         return BR.viewModel
@@ -22,16 +21,6 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(R.layout.f
 
     override fun getViewModelClass(): Class<MainViewModel> {
         return MainViewModel::class.java
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.enableColumnSwitching.postValue(true)
-
-        if (!permissionsHelper.hasReadStoragePermission()) {
-            permissionsHelper.setLifecycleOwner(this)
-            permissionsHelper.requestStorageReadPermission()
-        }
     }
 
 }
