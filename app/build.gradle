@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs 'en' // to save app size as non-english resources won't be exported
+        resConfigs 'en','ar' // to save app size as non-english and non-arabic resources won't be exported
     }
 
     buildTypes {
