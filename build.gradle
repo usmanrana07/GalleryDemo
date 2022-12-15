@@ -32,5 +32,7 @@ ext {
     espressoVersion = '3.5.0'
 
     splashVersion = '1.0.0'
+    glideVersion = '4.14.2'
+    navVersion = '2.5.3'
 
 }

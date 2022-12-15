@@ -18,7 +18,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs 'en','ar' // to save app size as non-english and non-arabic resources won't be exported
+        resConfigs 'en', 'ar'
+        // to save app size as non-english and non-arabic resources won't be exported
     }
 
     buildTypes {
@@ -59,7 +60,12 @@ dependencies {
     // dependency injection
     implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
     kapt "com.google.dagger:hilt-compiler:$daggerHiltVersion"
-
+    // glide for image loading
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$testExtJunit"
