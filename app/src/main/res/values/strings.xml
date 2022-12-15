@@ -5,4 +5,5 @@
     <string name="desc_gallery_permission">Please allow us to access your gallery so we can show you media here. You would be able show all the folders and the images or videos inside them.</string>
     <string name="allow">Allow</string>
     <string name="content_description">thumbnail</string>
+    <string name="empty_list">No media available</string>
 </resources>

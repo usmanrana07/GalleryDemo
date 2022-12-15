@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/permission_title"
+            android:textColor="@color/title"
             android:textStyle="bold"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toTopOf="@+id/tvDescription"

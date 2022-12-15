@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_spacing">16dp</dimen>
-
+    <dimen name="small_spacing">5dp</dimen>
     <dimen name="permission_view_horizontal_spacing">30dp</dimen>
     <dimen name="toggle_folders_view_width">61dp</dimen>
     <dimen name="toggle_folders_view_height">31dp</dimen>

@@ -7,7 +7,7 @@
 
     <color name="background">#1A1B1B</color>
 
-    <color name="permission_title">@color/white</color>
+    <color name="title">@color/white</color>
     <color name="permission_description">@color/white</color>
     <color name="folder_title">@color/white</color>
     <color name="ic_columns_stroke">#8C8C8C</color>
