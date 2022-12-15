@@ -87,14 +87,12 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
         val binding: VB,
         val listener: GalleryFoldersViewHolderInterface
     ) : BaseViewHolder(binding.root) {
-        protected lateinit var itemViewModel: FolderItemViewModel
         override fun onBind(position: Int) {
             val folder = listener.getItem(position)
-            itemViewModel = FolderItemViewModel(folder) {
+            val itemViewModel = FolderItemViewModel(folder) {
                 onFolderClicked()
             }
             binding.setVariable(BR.viewModel, itemViewModel)
-            binding.executePendingBindings()
         }
 
         protected fun onFolderClicked() {
