@@ -1,7 +1,13 @@
 package com.gallerydemo.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+
+
+    fun onAllowClicked() {
+        Log.d("usm_test_allow", "onAllowClicked")
+    }
+
 }

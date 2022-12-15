@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GalleryDemo</string>
+
+    <string name="title_gallery_permission">Gallery Permission</string>
+    <string name="desc_gallery_permission">Please allow us to access your gallery so we can show you media here. You would be able show all the folders and the images or videos inside them.</string>
+    <string name="allow">Allow</string>
 </resources>
