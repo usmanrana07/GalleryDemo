@@ -10,8 +10,7 @@ import com.gallerydemo.databinding.ItemGridFolderViewBinding
 import com.gallerydemo.databinding.ItemLinearFolderViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
 import com.gallerydemo.ui.base.BaseViewHolder
-import com.gallerydemo.ui.main.folder.FolderItemViewModel
-import com.gallerydemo.ui.main.folder.GalleryFolder
+import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.utils.printLog
 import javax.inject.Inject
 

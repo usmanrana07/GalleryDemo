@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.gallerydemo.ui.main.folder.FolderItemViewModel" />
+            type="com.gallerydemo.ui.main.folder.adapter.FolderItemViewModel" />
 
     </data>
 
