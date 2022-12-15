@@ -1,5 +1,7 @@
 package com.gallerydemo.ui.main
 
+import android.os.Bundle
+import android.view.View
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentMainBinding
@@ -19,5 +21,10 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>(R.layout.f
         return MainViewModel::class.java
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.enableColumnSwitching.postValue(true)
+    }
 
 }

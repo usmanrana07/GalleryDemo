@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.gallerydemo.ui.main.MainViewModel" />
@@ -15,6 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.main.MainFragment">
+
+        <ToggleButton
+            android:id="@+id/toggleFoldersMode"
+            android:layout_width="@dimen/toggle_folders_view_width"
+            android:layout_height="@dimen/toggle_folders_view_height"
+            android:layout_marginEnd="@dimen/default_spacing"
+            android:layout_marginTop="@dimen/default_spacing"
+            android:background="@{viewModel.enableColumnSwitching?@drawable/toggle_folders_mode:null}"
+            android:checked="@={viewModel.folderModeObservable.checked}"
+            android:textOff=""
+            android:textOn=""
+            android:visibility="@{viewModel.enableColumnSwitching?View.VISIBLE:View.GONE,default=gone}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.gallerydemo.ui.custom.PermissionDetailView
             android:id="@+id/body"
