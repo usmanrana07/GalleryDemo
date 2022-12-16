@@ -2,6 +2,7 @@ package com.gallerydemo.ui.main.permission
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.Navigation
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentPermissionBinding
@@ -27,6 +28,9 @@ class PermissionFragment :
         if (!permissionsHelper.hasReadStoragePermission()) {
             permissionsHelper.setLifecycleOwner(this)
             permissionsHelper.requestStorageReadPermission()
+        } else {
+            val navController = Navigation.findNavController(bindings.root)
+            navController.navigate(R.id.action_permissionFragment_to_foldersFragment)
         }
     }
 

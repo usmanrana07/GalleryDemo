@@ -2,11 +2,15 @@ package com.gallerydemo.ui.main.media
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentMediaListBinding
 import com.gallerydemo.ui.base.BaseFragment
+import com.gallerydemo.ui.main.GallerySharedViewModel
 import com.gallerydemo.ui.main.media.adapter.MediaListAdapter
+import com.gallerydemo.utils.GalleryEqualGapItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,9 +20,26 @@ class MediaListFragment :
 
     @Inject
     lateinit var mediaListAdapter: MediaListAdapter
-
-    companion object {
-        fun newInstance() = MediaListFragment()
+    private val gallerySharedViewModel: GallerySharedViewModel by lazy {
+        ViewModelProvider(requireActivity())[GallerySharedViewModel::class.java]
+    }
+    private val gridItemDecoration: GalleryEqualGapItemDecoration by lazy {
+        GalleryEqualGapItemDecoration(
+            gridLayoutManager.spanCount,
+            resources.getDimension(R.dimen.grid_media_item_spacing).toInt()
+        )
+    }
+    private val gridLayoutManager: GridLayoutManager by lazy {
+        if (bindings.rvMedia.layoutManager is GridLayoutManager) {
+            bindings.rvMedia.layoutManager as GridLayoutManager
+        } else {
+            GridLayoutManager(
+                context,
+                resources.getInteger(R.integer.media_grid_span_count)
+            ).apply {
+                bindings.rvMedia.layoutManager = this
+            }
+        }
     }
 
     override fun getBindingVariable(): Int {
@@ -33,16 +54,30 @@ class MediaListFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerView()
+        subscribeLiveDataObserver()
+
     }
 
     private fun setUpRecyclerView() {
-        bindings.rvMedia.adapter = mediaListAdapter
+
+        bindings.rvMedia.apply {
+            addItemDecoration(gridItemDecoration)
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when {
+                        mediaListAdapter.isListEmpty -> gridLayoutManager.spanCount
+                        else -> 1
+                    }
+                }
+            }
+            adapter = mediaListAdapter
+        }
     }
 
     private fun subscribeLiveDataObserver() {
-        /*viewModel.mediaLiveData.observe(this) {
-            mediaListAdapter.setData(it)
-        }*/
+        gallerySharedViewModel.selectedFolder.observe(viewLifecycleOwner) {
+            mediaListAdapter.setData(it.mediaList)
+        }
     }
 
 }

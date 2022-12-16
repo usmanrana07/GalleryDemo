@@ -18,9 +18,8 @@ import javax.inject.Inject
 class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewHolder>(),
     GalleryMediaItemViewHolderInterface {
     private val viewTypeVideo = 2
-
     private val dataList: MutableList<MediaItem> = mutableListOf()
-
+    val isListEmpty: Boolean get() = dataList.isEmpty()
     @SuppressLint("NotifyDataSetChanged")
     fun setData(folders: List<MediaItem>) {
         if (dataList.isNotEmpty())

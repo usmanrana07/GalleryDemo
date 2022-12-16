@@ -2,23 +2,33 @@ package com.gallerydemo.ui.main.folder
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gallerydemo.BR
 import com.gallerydemo.R
+import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.databinding.FragmentGalleryFoldersBinding
 import com.gallerydemo.ui.base.BaseFragment
+import com.gallerydemo.ui.main.GallerySharedViewModel
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
+import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapterInterface
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class GalleryFoldersFragment :
-    BaseFragment<FragmentGalleryFoldersBinding, GalleryFoldersViewModel>(R.layout.fragment_gallery_folders) {
+    BaseFragment<FragmentGalleryFoldersBinding, GalleryFoldersViewModel>(R.layout.fragment_gallery_folders),
+    GalleryFoldersAdapterInterface {
 
     @Inject
     lateinit var foldersAdapter: GalleryFoldersAdapter
+    private val gallerySharedViewModel: GallerySharedViewModel by lazy {
+        ViewModelProvider(requireActivity())[GallerySharedViewModel::class.java]
+    }
     private val gridItemDecoration: GalleryEqualGapItemDecoration by lazy {
         GalleryEqualGapItemDecoration(
             gridLayoutManager.spanCount,
@@ -62,9 +72,9 @@ class GalleryFoldersFragment :
     }
 
     private fun setUpRecyclerView() {
+        foldersAdapter.adapterInterface = this@GalleryFoldersFragment
         bindings.rvFolders.apply {
             addItemDecoration(gridItemDecoration)
-
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when {
@@ -87,7 +97,7 @@ class GalleryFoldersFragment :
         }
     }
 
-    fun onToggleFolderViewMode(showLinear: Boolean) {
+    private fun onToggleFolderViewMode(showLinear: Boolean) {
         bindings.rvFolders.layoutManager = if (showLinear) {
             bindings.rvFolders.removeItemDecoration(gridItemDecoration)
             linearLayoutManager
@@ -96,6 +106,12 @@ class GalleryFoldersFragment :
             gridLayoutManager
         }
         foldersAdapter.isGridView = !showLinear
+    }
+
+    override fun onItemClick(folder: GalleryFolder) {
+        gallerySharedViewModel.selectedFolder.value = folder
+        val navController = findNavController(bindings.root)
+        navController.navigate(R.id.action_foldersFragment_to_mediaListFragment)
     }
 
 }
