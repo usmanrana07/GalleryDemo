@@ -15,7 +15,10 @@ import com.gallerydemo.utils.printLog
 abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
 
-    protected lateinit var bindings: DB
+    private var _bindings: DB? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    protected val bindings get() = _bindings!!
     protected lateinit var viewModel: VM
 
     protected abstract fun getBindingVariable(): Int
@@ -32,7 +35,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bindings = DataBindingUtil.inflate(inflater, layoutResId, container, false)
+        _bindings = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         bindings.lifecycleOwner = viewLifecycleOwner
         return bindings.root
     }
@@ -48,6 +51,11 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes
             printLog("usm_test_folder", "getEventsLiveData")
             onEventReceived(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindings = null
     }
 
 }
