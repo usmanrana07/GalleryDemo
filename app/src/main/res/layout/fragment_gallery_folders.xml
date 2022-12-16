@@ -17,28 +17,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:elevation="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/default_spacing"
+            android:paddingVertical="@dimen/default_spacing"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/folders"
+                android:textColor="@color/title"
+                android:textSize="@dimen/top_title_text"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@+id/toggleFoldersMode"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/toggleFoldersMode"
+                android:layout_width="@dimen/toggle_folders_view_width"
+                android:layout_height="@dimen/toggle_folders_view_height"
+                android:background="@drawable/toggle_folders_mode"
+                android:checked="@={viewModel.folderModeObservable.checked}"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFolders"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/default_spacing"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toggleFoldersMode"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:spanCount="@integer/folders_grid_span_count"
             tools:listitem="@layout/item_grid_folder_view" />
 
-        <ToggleButton
-            android:id="@+id/toggleFoldersMode"
-            android:layout_width="@dimen/toggle_folders_view_width"
-            android:layout_height="@dimen/toggle_folders_view_height"
-            android:layout_marginTop="@dimen/default_spacing"
-            android:layout_marginEnd="@dimen/default_spacing"
-            android:background="@drawable/toggle_folders_mode"
-            android:checked="@={viewModel.folderModeObservable.checked}"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

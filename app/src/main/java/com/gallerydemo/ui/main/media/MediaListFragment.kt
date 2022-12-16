@@ -76,6 +76,7 @@ class MediaListFragment :
 
     private fun subscribeLiveDataObserver() {
         gallerySharedViewModel.selectedFolder.observe(viewLifecycleOwner) {
+            viewModel.folderTitle.value = it.title
             mediaListAdapter.setData(it.mediaList)
         }
     }

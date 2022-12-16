@@ -8,4 +8,7 @@
     <string name="message_open_permissions_setting">يرجى تمكين الأذونات من الإعدادات.</string>
     <string name="settings">الإعدادات</string>
     <string name="cancel">إلغاء</string>
+    <string name="folders">المجلدات</string>
+    <string name="all_images">جميع الصور</string>
+    <string name="all_videos">جميع الفيديو</string>
 </resources>

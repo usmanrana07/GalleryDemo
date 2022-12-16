@@ -17,12 +17,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:elevation="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/default_spacing"
+            android:paddingVertical="@dimen/default_spacing"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description"
+                android:onClick="@{()->viewModel.onBackClick()}"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_spacing"
+                android:text="@{viewModel.folderTitle}"
+                android:textColor="@color/title"
+                android:textSize="@dimen/top_title_text"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+                app:layout_constraintStart_toEndOf="@+id/ivBack"
+                app:layout_constraintTop_toTopOf="@+id/ivBack"
+                tools:text="@string/all_images" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMedia"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/default_spacing"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:spanCount="@integer/media_grid_span_count"
             tools:listitem="@layout/item_video_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>

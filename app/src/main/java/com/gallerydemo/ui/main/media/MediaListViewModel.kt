@@ -10,4 +10,8 @@ class MediaListViewModel @Inject constructor() : ViewModel() {
 
     val folderTitle: MutableLiveData<String> = MutableLiveData()
 
+    fun onBackClick() {
+
+    }
+
 }
