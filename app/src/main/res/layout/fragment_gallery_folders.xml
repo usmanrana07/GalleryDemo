@@ -60,7 +60,7 @@
             android:id="@+id/rvFolders"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_spacing"
+            android:layout_marginTop="@dimen/small_spacing"
             android:orientation="vertical"
             android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE,default=gone}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

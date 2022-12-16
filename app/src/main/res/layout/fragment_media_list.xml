@@ -59,7 +59,7 @@
             android:id="@+id/rvMedia"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_spacing"
+            android:layout_marginTop="@dimen/small_spacing"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
