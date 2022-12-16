@@ -8,7 +8,6 @@ import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentPermissionBinding
 import com.gallerydemo.ui.base.BaseFragment
 import com.gallerydemo.ui.main.ON_ALLOW
-import com.gallerydemo.utils.PermissionsHelper
 
 class PermissionFragment :
     BaseFragment<FragmentPermissionBinding, PermissionViewModel>(R.layout.fragment_permission) {

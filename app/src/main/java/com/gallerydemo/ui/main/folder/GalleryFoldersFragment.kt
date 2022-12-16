@@ -17,6 +17,7 @@ import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapterInterface
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
+import com.gallerydemo.utils.printLog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -53,16 +54,17 @@ class GalleryFoldersFragment :
         LinearLayoutManager(context)
     }
 
-    companion object {
-        fun newInstance() = GalleryFoldersFragment()
-    }
-
     override fun getBindingVariable(): Int {
         return BR.viewModel
     }
 
     override fun getViewModelClass(): Class<GalleryFoldersViewModel> {
         return GalleryFoldersViewModel::class.java
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        printLog("usm_test_folder","onCreate")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,6 +93,7 @@ class GalleryFoldersFragment :
 
     private fun subscribeLiveDataObserver() {
         viewModel.getFoldersLiveData().observe(viewLifecycleOwner) {
+            printLog("usm_test_folder", "subscribeLiveDataObserver: size= ${it.size}")
             foldersAdapter.setData(it)
         }
     }

@@ -9,7 +9,7 @@ import com.gallerydemo.data.local.models.MediaItem
 import com.gallerydemo.utils.GALLERY_IMAGE_AND_VIDEOS
 import com.gallerydemo.utils.GALLERY_VIDEO
 import com.gallerydemo.utils.GalleryModes
-import com.gallerydemo.utils.printLog
+import com.gallerydemo.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,10 +22,14 @@ class GalleryRepository @Inject constructor() {
     fun loadMediaFromStorage(
         contentResolver: ContentResolver,
         @GalleryModes galleryMode: Int = GALLERY_IMAGE_AND_VIDEOS
-    ): Flow<List<GalleryFolder>> {
+    ): Flow<State<List<GalleryFolder>>> {
         return flow {
+            emit(State.Loading)
             val data = executeContentResolver(contentResolver, galleryMode)
-            emit(data)
+            if (data != null)
+                emit(State.Success(data))
+            else
+                emit(State.Failure())
         }.flowOn(Dispatchers.IO)
     }
 
@@ -59,10 +63,9 @@ class GalleryRepository @Inject constructor() {
     private fun executeContentResolver(
         contentResolver: ContentResolver,
         @GalleryModes galleryMode: Int
-    ): List<GalleryFolder> {
-        val folders = mutableListOf<GalleryFolder>()
-
-        kotlin.runCatching {
+    ): List<GalleryFolder>? {
+        return kotlin.runCatching {
+            val folders = mutableListOf<GalleryFolder>()
             val cursor: Cursor?
             val uri: Uri = MediaStore.Files.getContentUri("external")
             val selection: String = getSelectionQuery(galleryMode)
@@ -97,11 +100,9 @@ class GalleryRepository @Inject constructor() {
                 folders.add(GalleryFolder("All Images", allImageMedia))
                 folders.add(GalleryFolder("All Videos", allVideoMedia))
                 folders.addAll(foldersMap.values)
-
             }
-        }
-        printLog("usm_gallery_folders", "size= " + folders.size)
-        return folders
+            folders
+        }.getOrNull()
     }
 
     private fun cursorToGalleryMedia(cursor: Cursor?): Pair<String, MediaItem>? {

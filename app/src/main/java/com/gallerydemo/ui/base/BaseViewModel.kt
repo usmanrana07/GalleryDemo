@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gallerydemo.ui.main.GalleryEvents
-import com.gallerydemo.utils.SingleLiveEvent
+import com.gallerydemo.utils.observable.SingleLiveEvent
 
 abstract class BaseViewModel : ViewModel() {
 

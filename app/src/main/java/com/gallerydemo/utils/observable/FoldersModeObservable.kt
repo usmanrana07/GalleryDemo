@@ -1,4 +1,4 @@
-package com.gallerydemo.utils
+package com.gallerydemo.utils.observable
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable

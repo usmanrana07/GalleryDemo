@@ -1,4 +1,4 @@
-package com.gallerydemo.utils
+package com.gallerydemo.ui.main.permission
 
 import android.Manifest
 import android.content.Intent
@@ -14,6 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.gallerydemo.R
+import com.gallerydemo.utils.PermissionsResultCallback
+import com.gallerydemo.utils.printLog
 
 /**
  * This class is to check and handle the required permissions

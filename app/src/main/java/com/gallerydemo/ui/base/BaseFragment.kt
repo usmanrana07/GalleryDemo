@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gallerydemo.ui.main.GalleryEvents
+import com.gallerydemo.utils.printLog
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
@@ -44,6 +45,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes
 
     private fun setEventsObserver() {
         viewModel.getEventsLiveData().observe(viewLifecycleOwner) {
+            printLog("usm_test_folder", "getEventsLiveData")
             onEventReceived(it)
         }
     }
