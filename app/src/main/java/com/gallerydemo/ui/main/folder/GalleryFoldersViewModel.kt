@@ -10,7 +10,6 @@ import com.gallerydemo.ui.main.TOGGLE_TO_GRID_VIEW
 import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.utils.State
 import com.gallerydemo.utils.observable.FoldersModeObservable
-import com.gallerydemo.utils.printLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,7 +31,9 @@ class GalleryFoldersViewModel @Inject constructor(private val repository: Galler
     fun getFoldersLiveData(): LiveData<List<GalleryFolder>> = _foldersLiveData
 
     fun fetchGalleryMedia(contentResolver: ContentResolver) {
-        printLog("usm_test_folder", "fetchGalleryMedia")
+        _foldersLiveData.value?.takeUnless { it.isEmpty() }?.let {
+            return // we already have loaded data
+        }
         viewModelScope.launch {
             repository.loadMediaFromStorage(contentResolver).collectLatest { apiState ->
                 when (apiState) {
