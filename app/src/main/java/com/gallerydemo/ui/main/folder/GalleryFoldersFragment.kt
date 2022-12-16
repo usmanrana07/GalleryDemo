@@ -49,11 +49,6 @@ class GalleryFoldersFragment :
         return GalleryFoldersViewModel::class.java
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        printLog("usm_test_folder", "onCreate")
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -68,8 +63,7 @@ class GalleryFoldersFragment :
                 bindings.rvFolders.layoutManager as GridLayoutManager
             } else {
                 GridLayoutManager(
-                    context,
-                    resources.getInteger(R.integer.folders_grid_span_count)
+                    context, resources.getInteger(R.integer.folders_grid_span_count)
                 )
             }
             _gridLayoutManager = layoutManager
@@ -91,15 +85,14 @@ class GalleryFoldersFragment :
         bindings.rvFolders.apply {
             if (foldersAdapter.isGridView) {
                 val gridLayoutManager = getGridLayoutManager()
-                gridLayoutManager.spanSizeLookup =
-                    object : GridLayoutManager.SpanSizeLookup() {
-                        override fun getSpanSize(position: Int): Int {
-                            return when {
-                                foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
-                                else -> 1
-                            }
+                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return when {
+                            foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
+                            else -> 1
                         }
                     }
+                }
             }
             adapter = foldersAdapter
         }
@@ -128,8 +121,8 @@ class GalleryFoldersFragment :
             bindings.rvFolders.addItemDecoration(gridItemDecoration)
             getGridLayoutManager()
         }
-        if (bindings.rvFolders.layoutManager != layoutManager)
-            bindings.rvFolders.layoutManager = layoutManager
+        if (bindings.rvFolders.layoutManager != layoutManager) bindings.rvFolders.layoutManager =
+            layoutManager
         foldersAdapter.isGridView = !showLinear
     }
 
