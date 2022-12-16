@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentMediaListBinding
@@ -88,6 +89,11 @@ class MediaListFragment :
             val navController = Navigation.findNavController(bindings.root)
             navController.popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Glide.get(requireContext()).clearMemory()
     }
 
 }
