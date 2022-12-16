@@ -21,12 +21,13 @@
             android:id="@+id/ivThumbnail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/content_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@color/media_placeholder" />
+            tools:src="@drawable/ic_default_thumbnail" />
 
         <TextView
             android:id="@+id/tvTitle"

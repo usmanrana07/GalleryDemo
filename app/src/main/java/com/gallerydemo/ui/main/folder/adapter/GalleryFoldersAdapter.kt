@@ -2,7 +2,9 @@ package com.gallerydemo.ui.main.folder.adapter
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
+import com.bumptech.glide.Glide
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.data.local.models.GalleryFolder
@@ -16,16 +18,16 @@ import javax.inject.Inject
 
 class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewHolder>(),
     GalleryFoldersViewHolderInterface {
-
+    private val viewTypeLinear = 2
     private val dataList: MutableList<GalleryFolder> = mutableListOf()
     val isListEmpty: Boolean
-    get() = dataList.isEmpty()
+        get() = dataList.isEmpty()
     var isGridView = true
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
+            field = value
             if (dataList.isNotEmpty())
                 notifyDataSetChanged()
-            field = value
         }
 
 
@@ -49,18 +51,19 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     override fun getItemViewType(position: Int): Int {
         return when {
             dataList.isEmpty() -> viewTypeEmpty
-            else -> viewTypeNormal
+            isGridView -> viewTypeNormal
+            else -> viewTypeLinear
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return when (viewType) {
+            viewTypeLinear -> createLinearItemViewHolder(parent)
+            else -> super.onCreateViewHolder(parent, viewType)
         }
     }
 
     override fun createNormalItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        return if (isGridView)
-            createGridItemViewHolder(parent)
-        else
-            createLinearItemViewHolder(parent)
-    }
-
-    private fun createGridItemViewHolder(parent: ViewGroup): BaseViewHolder {
         return FolderGridItemViewHolder(
             bindRecyclerViewItem(
                 parent,
@@ -94,27 +97,41 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
         val binding: VB,
         val listener: GalleryFoldersViewHolderInterface
     ) : BaseViewHolder(binding.root) {
+
+        protected abstract val ivThumbnail: ImageView
+
         override fun onBind(position: Int) {
             val folder = listener.getItem(position)
             val itemViewModel = FolderItemViewModel(folder) {
                 onFolderClicked()
             }
             binding.setVariable(BR.viewModel, itemViewModel)
+            itemViewModel.thumbnail?.let { loadThumbnail(it) } ?: kotlin.run {
+                ivThumbnail.setImageResource(R.drawable.ic_default_thumbnail)
+            }
         }
 
         protected fun onFolderClicked() {
             listener.onItemClick()
         }
+
+        private fun loadThumbnail(thumbnail: String) {
+            Glide.with(ivThumbnail).load(thumbnail)
+                .placeholder(R.drawable.ic_default_thumbnail)//.sizeMultiplier(0.1f)
+                .into(ivThumbnail)
+        }
     }
 
     private class FolderGridItemViewHolder(
         binding: ItemGridFolderViewBinding,
-        listener: GalleryFoldersViewHolderInterface
+        listener: GalleryFoldersViewHolderInterface,
+        override val ivThumbnail: ImageView = binding.ivThumbnail
     ) : BaseItemViewHolder<ItemGridFolderViewBinding>(binding, listener)
 
     private class FolderLinearItemViewHolder(
         binding: ItemLinearFolderViewBinding,
-        listener: GalleryFoldersViewHolderInterface
+        listener: GalleryFoldersViewHolderInterface,
+        override val ivThumbnail: ImageView = binding.ivThumbnail
     ) : BaseItemViewHolder<ItemLinearFolderViewBinding>(binding, listener)
 
 

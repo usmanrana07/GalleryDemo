@@ -2,7 +2,9 @@ package com.gallerydemo.ui.main.media.adapter
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
+import com.bumptech.glide.Glide
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.data.local.models.MediaItem
@@ -81,22 +83,32 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
         val binding: VB,
         val listener: GalleryMediaItemViewHolderInterface
     ) : BaseViewHolder(binding.root) {
+        protected abstract val ivThumbnail: ImageView
         override fun onBind(position: Int) {
             val item = listener.getItem(position)
             val itemViewModel = MediaListItemViewModel(item)
             binding.setVariable(BR.viewModel, itemViewModel)
+
+            loadThumbnail(itemViewModel.thumbnail)
         }
 
+        private fun loadThumbnail(thumbnail: String) {
+            Glide.with(ivThumbnail).load(thumbnail)
+                .placeholder(R.drawable.ic_default_thumbnail)//.sizeMultiplier(0.1f)
+                .into(ivThumbnail)
+        }
     }
 
     private class ImageMediaItemViewHolder(
         binding: ItemMediaViewBinding,
-        listener: GalleryMediaItemViewHolderInterface
+        listener: GalleryMediaItemViewHolderInterface,
+        override val ivThumbnail: ImageView = binding.ivThumbnail
     ) : BaseItemViewHolder<ItemMediaViewBinding>(binding, listener)
 
     private class VideoMediaItemViewHolder(
         binding: ItemVideoViewBinding,
-        listener: GalleryMediaItemViewHolderInterface
+        listener: GalleryMediaItemViewHolderInterface,
+        override val ivThumbnail: ImageView = binding.ivThumbnail
     ) : BaseItemViewHolder<ItemVideoViewBinding>(binding, listener)
 
 }

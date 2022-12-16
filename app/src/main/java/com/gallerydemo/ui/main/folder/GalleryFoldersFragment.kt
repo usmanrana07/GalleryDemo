@@ -57,7 +57,8 @@ class GalleryFoldersFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerView()
-
+        subscribeLiveDataObserver()
+        viewModel.fetchGalleryMedia(requireContext().contentResolver)
     }
 
     private fun setUpRecyclerView() {
@@ -77,9 +78,13 @@ class GalleryFoldersFragment :
     }
 
     private fun subscribeLiveDataObserver() {
-        /*viewModel.foldersLiveData.observe(this) {
+        viewModel.getFoldersLiveData().observe(viewLifecycleOwner) {
             foldersAdapter.setData(it)
-        }*/
+        }
+
+        viewModel.getToggleViewLiveData().observe(viewLifecycleOwner) {
+            onToggleFolderViewMode(it)
+        }
     }
 
     fun onToggleFolderViewMode(showLinear: Boolean) {

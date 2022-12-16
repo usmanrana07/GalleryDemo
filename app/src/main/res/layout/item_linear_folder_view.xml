@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.FolderThumbnail"
-            tools:src="@color/media_placeholder" />
+            tools:src="@drawable/ic_default_thumbnail" />
 
         <TextView
             android:id="@+id/tvName"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_spacing"
             android:alpha=".5"
-            android:text="@{String.valueOf(viewModel.count)}"
+            android:text="@{viewModel.count}"
             android:textColor="@color/folder_title"
             android:textSize="@dimen/item_folder_text"
             app:layout_constraintStart_toEndOf="@+id/ivThumbnail"

@@ -34,11 +34,10 @@
             android:layout_height="@dimen/toggle_folders_view_height"
             android:layout_marginTop="@dimen/default_spacing"
             android:layout_marginEnd="@dimen/default_spacing"
-            android:background="@{viewModel.enableColumnSwitching?@drawable/toggle_folders_mode:null}"
+            android:background="@drawable/toggle_folders_mode"
             android:checked="@={viewModel.folderModeObservable.checked}"
             android:textOff=""
             android:textOn=""
-            android:visibility="@{viewModel.enableColumnSwitching?View.VISIBLE:View.GONE,default=visible}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
