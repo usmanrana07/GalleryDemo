@@ -8,10 +8,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.gallerydemo.ui.main.GalleryEvents
 
-abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel>(@LayoutRes private val layoutResId: Int) :
+abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
 
     protected lateinit var bindings: DB
@@ -19,6 +19,8 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel>(@LayoutRes pri
 
     protected abstract fun getBindingVariable(): Int
     protected abstract fun getViewModelClass(): Class<VM>
+
+    protected abstract fun onEventReceived(@GalleryEvents event: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,13 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel>(@LayoutRes pri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindings.setVariable(getBindingVariable(), viewModel)
+        setEventsObserver()
+    }
+
+    private fun setEventsObserver() {
+        viewModel.getEventsLiveData().observe(viewLifecycleOwner) {
+            onEventReceived(it)
+        }
     }
 
 }

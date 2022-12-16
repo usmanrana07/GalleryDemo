@@ -1,15 +1,15 @@
 package com.gallerydemo.ui.main.permission
 
-import androidx.lifecycle.ViewModel
-import com.gallerydemo.utils.printLog
+import com.gallerydemo.ui.base.BaseViewModel
+import com.gallerydemo.ui.main.ON_ALLOW
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PermissionViewModel @Inject constructor() : ViewModel() {
+class PermissionViewModel @Inject constructor() : BaseViewModel() {
 
     fun onAllowClicked() {
-        printLog("usm_gallery", "onAllowClicked")
+        eventsLiveData.postValue(ON_ALLOW)
     }
 
 }

@@ -3,12 +3,14 @@ package com.gallerydemo.ui.main.media
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.databinding.FragmentMediaListBinding
 import com.gallerydemo.ui.base.BaseFragment
 import com.gallerydemo.ui.main.GallerySharedViewModel
+import com.gallerydemo.ui.main.ON_BACK_PRESS
 import com.gallerydemo.ui.main.media.adapter.MediaListAdapter
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +80,13 @@ class MediaListFragment :
         gallerySharedViewModel.selectedFolder.observe(viewLifecycleOwner) {
             viewModel.folderTitle.value = it.title
             mediaListAdapter.setData(it.mediaList)
+        }
+    }
+
+    override fun onEventReceived(event: Int) {
+        if (event == ON_BACK_PRESS) {
+            val navController = Navigation.findNavController(bindings.root)
+            navController.popBackStack()
         }
     }
 

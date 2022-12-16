@@ -12,6 +12,8 @@ import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.databinding.FragmentGalleryFoldersBinding
 import com.gallerydemo.ui.base.BaseFragment
 import com.gallerydemo.ui.main.GallerySharedViewModel
+import com.gallerydemo.ui.main.TOGGLE_TO_GRID_VIEW
+import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapterInterface
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
@@ -91,9 +93,13 @@ class GalleryFoldersFragment :
         viewModel.getFoldersLiveData().observe(viewLifecycleOwner) {
             foldersAdapter.setData(it)
         }
+    }
 
-        viewModel.getToggleViewLiveData().observe(viewLifecycleOwner) {
-            onToggleFolderViewMode(it)
+    override fun onEventReceived(event: Int) {
+        when (event) {
+            TOGGLE_TO_LINEAR_VIEW -> onToggleFolderViewMode(true)
+            TOGGLE_TO_GRID_VIEW -> onToggleFolderViewMode(false)
+            else -> {}
         }
     }
 
