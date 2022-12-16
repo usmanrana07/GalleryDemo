@@ -19,16 +19,16 @@ import com.gallerydemo.utils.OnActionCallback
     )
 )
 class PermissionDetailView : FrameLayout {
-    private var itemViewBinding: LayoutPermissionDetailViewBinding? = null
+    private lateinit var itemViewBinding: LayoutPermissionDetailViewBinding
     var title: String?
-        get() = itemViewBinding?.tvTitle?.text?.toString()
+        get() = itemViewBinding.tvTitle.text?.toString()
         set(value) {
-            itemViewBinding?.tvTitle?.text = value
+            itemViewBinding.tvTitle.text = value
         }
     var description: String?
-        get() = itemViewBinding?.tvDescription?.text?.toString()
+        get() = itemViewBinding.tvDescription.text?.toString()
         set(value) {
-            itemViewBinding?.tvDescription?.text = value
+            itemViewBinding.tvDescription.text = value
         }
     private var onAllowActionCallback: OnActionCallback? = null
 
@@ -56,18 +56,20 @@ class PermissionDetailView : FrameLayout {
                     it.btnAllow.setOnClickListener { onAllowActionCallback?.invoke() }
                 }
 
-        val a =
+        val attributes =
             context.obtainStyledAttributes(attrs, R.styleable.PermissionDetailView, defStyleAttr, 0)
         try {
-            val n = a.indexCount
+            val n = attributes.indexCount
+
             for (i in 0 until n) {
-                when (val attr = a.getIndex(i)) {
-                    R.styleable.PermissionDetailView_title -> title = a.getString(attr)
-                    R.styleable.PermissionDetailView_android_text -> description = a.getString(attr)
+                when (val attr = attributes.getIndex(i)) {
+                    R.styleable.PermissionDetailView_title -> title = attributes.getString(attr)
+                    R.styleable.PermissionDetailView_android_text -> description =
+                        attributes.getString(attr)
                 }
             }
         } finally {
-            a.recycle()
+            attributes.recycle()
         }
     }
 
@@ -76,11 +78,11 @@ class PermissionDetailView : FrameLayout {
     }
 
     fun setTitle(@StringRes resId: Int) {
-        itemViewBinding?.tvTitle?.setText(resId)
+        itemViewBinding.tvTitle.setText(resId)
     }
 
     fun setDescription(@StringRes resId: Int) {
-        itemViewBinding?.tvDescription?.setText(resId)
+        itemViewBinding.tvDescription.setText(resId)
     }
 
 }
