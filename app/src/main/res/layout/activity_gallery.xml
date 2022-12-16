@@ -6,10 +6,10 @@
     <data />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainActivity">
+        tools:context=".ui.main.GalleryActivity">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/navigationHostFragmentContainer"
@@ -17,6 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/main_navigation" />
+            app:navGraph="@navigation/gallery_navigation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
