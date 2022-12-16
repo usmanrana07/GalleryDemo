@@ -29,29 +29,16 @@ class GalleryFoldersFragment :
 
     @Inject
     lateinit var foldersAdapter: GalleryFoldersAdapter
+    private var _gridLayoutManager: GridLayoutManager? = null
+    private var _linearLayoutManager: LinearLayoutManager? = null
     private val gallerySharedViewModel: GallerySharedViewModel by lazy {
         ViewModelProvider(requireActivity())[GallerySharedViewModel::class.java]
     }
     private val gridItemDecoration: GalleryEqualGapItemDecoration by lazy {
         GalleryEqualGapItemDecoration(
-            gridLayoutManager.spanCount,
+            resources.getInteger(R.integer.media_grid_span_count),
             resources.getDimension(R.dimen.grid_media_item_spacing).toInt()
         )
-    }
-    private val gridLayoutManager: GridLayoutManager by lazy {
-        if (bindings.rvFolders.layoutManager is GridLayoutManager) {
-            bindings.rvFolders.layoutManager as GridLayoutManager
-        } else {
-            GridLayoutManager(
-                context,
-                resources.getInteger(R.integer.folders_grid_span_count)
-            ).apply {
-                bindings.rvFolders.layoutManager = this
-            }
-        }
-    }
-    private val linearLayoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(context)
     }
 
     override fun getBindingVariable(): Int {
@@ -64,7 +51,7 @@ class GalleryFoldersFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        printLog("usm_test_folder","onCreate")
+        printLog("usm_test_folder", "onCreate")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,17 +62,44 @@ class GalleryFoldersFragment :
         viewModel.fetchGalleryMedia(requireContext().contentResolver)
     }
 
+    private fun getGridLayoutManager(): GridLayoutManager {
+        return _gridLayoutManager ?: kotlin.run {
+            val layoutManager = if (bindings.rvFolders.layoutManager is GridLayoutManager) {
+                bindings.rvFolders.layoutManager as GridLayoutManager
+            } else {
+                GridLayoutManager(
+                    context,
+                    resources.getInteger(R.integer.folders_grid_span_count)
+                )
+            }
+            _gridLayoutManager = layoutManager
+            layoutManager
+        }
+    }
+
+    private fun getLinearLayoutManager(): LinearLayoutManager {
+        return _linearLayoutManager ?: kotlin.run {
+            LinearLayoutManager(context).also {
+                _linearLayoutManager = it
+            }
+        }
+    }
+
     private fun setUpRecyclerView() {
         foldersAdapter.adapterInterface = this@GalleryFoldersFragment
+        updateFoldersRVLayoutManager(viewModel.folderModeObservable.getChecked())
         bindings.rvFolders.apply {
-            addItemDecoration(gridItemDecoration)
-            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when {
-                        foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
-                        else -> 1
+            if (foldersAdapter.isGridView) {
+                val gridLayoutManager = getGridLayoutManager()
+                gridLayoutManager.spanSizeLookup =
+                    object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return when {
+                                foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
+                                else -> 1
+                            }
+                        }
                     }
-                }
             }
             adapter = foldersAdapter
         }
@@ -100,20 +114,22 @@ class GalleryFoldersFragment :
 
     override fun onEventReceived(event: Int) {
         when (event) {
-            TOGGLE_TO_LINEAR_VIEW -> onToggleFolderViewMode(true)
-            TOGGLE_TO_GRID_VIEW -> onToggleFolderViewMode(false)
+            TOGGLE_TO_LINEAR_VIEW -> updateFoldersRVLayoutManager(true)
+            TOGGLE_TO_GRID_VIEW -> updateFoldersRVLayoutManager(false)
             else -> {}
         }
     }
 
-    private fun onToggleFolderViewMode(showLinear: Boolean) {
-        bindings.rvFolders.layoutManager = if (showLinear) {
+    private fun updateFoldersRVLayoutManager(showLinear: Boolean) {
+        val layoutManager = if (showLinear) {
             bindings.rvFolders.removeItemDecoration(gridItemDecoration)
-            linearLayoutManager
+            getLinearLayoutManager()
         } else {
             bindings.rvFolders.addItemDecoration(gridItemDecoration)
-            gridLayoutManager
+            getGridLayoutManager()
         }
+        if (bindings.rvFolders.layoutManager != layoutManager)
+            bindings.rvFolders.layoutManager = layoutManager
         foldersAdapter.isGridView = !showLinear
     }
 
@@ -123,4 +139,10 @@ class GalleryFoldersFragment :
         navController.navigate(R.id.action_foldersFragment_to_mediaListFragment)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // clear the references to avoid 'is already attached to a RecyclerView' exception on re-create view
+        _linearLayoutManager = null
+        _gridLayoutManager = null
+    }
 }

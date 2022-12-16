@@ -24,9 +24,11 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     var isGridView = true
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            field = value
-            if (dataList.isNotEmpty())
-                notifyDataSetChanged()
+            if (field != value) {
+                field = value
+                if (dataList.isNotEmpty())
+                    notifyDataSetChanged()
+            }
         }
 
 
