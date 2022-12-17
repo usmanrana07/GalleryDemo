@@ -93,7 +93,7 @@ class MediaListFragment :
 
     override fun onDestroy() {
         super.onDestroy()
-        Glide.get(requireContext()).clearMemory()
+        context?.let { Glide.get(it).clearMemory() }
     }
 
 }
