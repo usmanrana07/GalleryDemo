@@ -93,7 +93,7 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
 
         private fun loadThumbnail(thumbnail: String) {
             Glide.with(ivThumbnail).load(thumbnail)
-                .placeholder(R.drawable.ic_default_thumbnail)//.sizeMultiplier(0.1f)
+                .placeholder(R.drawable.ic_default_thumbnail).sizeMultiplier(0.5f)
                 .into(ivThumbnail)
         }
     }
