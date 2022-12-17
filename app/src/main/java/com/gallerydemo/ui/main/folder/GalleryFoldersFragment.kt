@@ -15,8 +15,8 @@ import com.gallerydemo.ui.main.GallerySharedViewModel
 import com.gallerydemo.ui.main.TOGGLE_TO_GRID_VIEW
 import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
-import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapterInterface
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
+import com.gallerydemo.utils.callback.OnItemClickCallback
 import com.gallerydemo.utils.callback.StringResProvider
 import com.gallerydemo.utils.printLog
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GalleryFoldersFragment :
     BaseFragment<FragmentGalleryFoldersBinding, GalleryFoldersViewModel>(R.layout.fragment_gallery_folders),
-    GalleryFoldersAdapterInterface {
+    OnItemClickCallback<GalleryFolder> {
 
     @Inject
     lateinit var foldersAdapter: GalleryFoldersAdapter
@@ -88,7 +88,7 @@ class GalleryFoldersFragment :
     }
 
     private fun setUpRecyclerView() {
-        foldersAdapter.adapterInterface = this@GalleryFoldersFragment
+        foldersAdapter.onItemClickCallback = this@GalleryFoldersFragment
         updateFoldersRVLayoutManager(viewModel.folderModeObservable.getChecked())
         bindings.rvFolders.apply {
             if (foldersAdapter.isGridView) {
@@ -134,8 +134,8 @@ class GalleryFoldersFragment :
         foldersAdapter.isGridView = !showLinear
     }
 
-    override fun onItemClick(folder: GalleryFolder) {
-        gallerySharedViewModel.selectedFolder.value = folder
+    override fun onItemClick(item: GalleryFolder) {
+        gallerySharedViewModel.selectedFolder.value = item
         val navController = findNavController(bindings.root)
         navController.navigate(R.id.action_foldersFragment_to_mediaListFragment)
     }

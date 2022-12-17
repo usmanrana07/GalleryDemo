@@ -13,6 +13,8 @@ import com.gallerydemo.databinding.ItemGridFolderViewBinding
 import com.gallerydemo.databinding.ItemLinearFolderViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
 import com.gallerydemo.ui.base.BaseViewHolder
+import com.gallerydemo.utils.callback.ItemViewHolderCallback
+import com.gallerydemo.utils.callback.OnItemClickCallback
 import javax.inject.Inject
 
 class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewHolder>(),
@@ -20,7 +22,7 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     private val viewTypeLinear = 2
     private val dataList: MutableList<GalleryFolder> = mutableListOf()
     val isListEmpty: Boolean get() = dataList.isEmpty()
-    var adapterInterface: GalleryFoldersAdapterInterface? = null
+    var onItemClickCallback: OnItemClickCallback<GalleryFolder>? = null
     var isGridView = true
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -45,8 +47,8 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
         return dataList[position]
     }
 
-    override fun onItemClick(folder: GalleryFolder) {
-        adapterInterface?.onItemClick(folder)
+    override fun onItemClick(item: GalleryFolder) {
+        onItemClickCallback?.onItemClick(item)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -134,10 +136,4 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
 
 }
 
-interface GalleryFoldersViewHolderInterface : GalleryFoldersAdapterInterface {
-    fun getItem(position: Int): GalleryFolder
-}
-
-interface GalleryFoldersAdapterInterface {
-    fun onItemClick(folder: GalleryFolder)
-}
+interface GalleryFoldersViewHolderInterface : ItemViewHolderCallback<GalleryFolder>

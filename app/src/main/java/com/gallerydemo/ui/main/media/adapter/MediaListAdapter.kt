@@ -13,6 +13,8 @@ import com.gallerydemo.databinding.ItemMediaViewBinding
 import com.gallerydemo.databinding.ItemVideoViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
 import com.gallerydemo.ui.base.BaseViewHolder
+import com.gallerydemo.utils.callback.ItemViewHolderCallback
+import com.gallerydemo.utils.callback.OnItemClickCallback
 import javax.inject.Inject
 
 class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewHolder>(),
@@ -20,6 +22,8 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
     private val viewTypeVideo = 2
     private val dataList: MutableList<MediaItem> = mutableListOf()
     val isListEmpty: Boolean get() = dataList.isEmpty()
+    var onItemClickCallback: OnItemClickCallback<MediaItem>? = null
+
     @SuppressLint("NotifyDataSetChanged")
     fun setData(folders: List<MediaItem>) {
         if (dataList.isNotEmpty())
@@ -31,6 +35,10 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
 
     override fun getItem(position: Int): MediaItem {
         return dataList[position]
+    }
+
+    override fun onItemClick(item: MediaItem) {
+        onItemClickCallback?.onItemClick(item)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -85,7 +93,9 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
         protected abstract val ivThumbnail: ImageView
         override fun onBind(position: Int) {
             val item = listener.getItem(position)
-            val itemViewModel = MediaListItemViewModel(item)
+            val itemViewModel = MediaListItemViewModel(item) {
+                listener.onItemClick(item)
+            }
             binding.setVariable(BR.viewModel, itemViewModel)
 
             loadThumbnail(itemViewModel.thumbnail)
@@ -112,6 +122,4 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
 
 }
 
-interface GalleryMediaItemViewHolderInterface {
-    fun getItem(position: Int): MediaItem
-}
+interface GalleryMediaItemViewHolderInterface : ItemViewHolderCallback<MediaItem>

@@ -11,4 +11,10 @@
     <string name="folders">المجلدات</string>
     <string name="all_images">جميع الصور</string>
     <string name="all_videos">جميع الفيديو</string>
+    <string name="detail">التفاصيل</string>
+    <string name="ok">حسنا</string>
+    <string name="path">مسار</string>
+    <string name="mimeType">نوع التمثيل الصامت</string>
+    <string name="resolutin">الدقة</string>
+    <string name="size">بحجم</string>
 </resources>
