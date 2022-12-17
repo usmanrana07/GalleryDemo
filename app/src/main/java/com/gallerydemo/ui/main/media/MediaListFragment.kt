@@ -32,21 +32,8 @@ class MediaListFragment :
     }
     private val gridItemDecoration: GalleryEqualGapItemDecoration by lazy {
         GalleryEqualGapItemDecoration(
-            gridLayoutManager.spanCount,
             resources.getDimension(R.dimen.grid_media_item_spacing).toInt()
         )
-    }
-    private val gridLayoutManager: GridLayoutManager by lazy {
-        if (bindings.rvMedia.layoutManager is GridLayoutManager) {
-            bindings.rvMedia.layoutManager as GridLayoutManager
-        } else {
-            GridLayoutManager(
-                context,
-                resources.getInteger(R.integer.media_grid_span_count)
-            ).apply {
-                bindings.rvMedia.layoutManager = this
-            }
-        }
     }
 
     override fun getBindingVariable(): Int {
@@ -65,18 +52,31 @@ class MediaListFragment :
 
     }
 
-    private fun setUpRecyclerView() {
-        mediaListAdapter.onItemClickCallback = this@MediaListFragment
-        bindings.rvMedia.apply {
-            addItemDecoration(gridItemDecoration)
-            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when {
-                        mediaListAdapter.isListEmpty -> gridLayoutManager.spanCount
-                        else -> 1
-                    }
+    private fun setGridSpanLookup() {
+        val gridLayoutManager = if (bindings.rvMedia.layoutManager is GridLayoutManager) {
+            bindings.rvMedia.layoutManager as GridLayoutManager
+        } else {
+            GridLayoutManager(
+                context, resources.getInteger(R.integer.media_grid_span_count)
+            ).also {
+                bindings.rvMedia.layoutManager = it
+            }
+        }
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when {
+                    mediaListAdapter.isListEmpty -> gridLayoutManager.spanCount
+                    else -> 1
                 }
             }
+        }
+    }
+
+    private fun setUpRecyclerView() {
+        mediaListAdapter.onItemClickCallback = this@MediaListFragment
+        setGridSpanLookup()
+        bindings.rvMedia.apply {
+            addItemDecoration(gridItemDecoration)
             adapter = mediaListAdapter
         }
     }
@@ -105,13 +105,14 @@ class MediaListFragment :
     }
 
     private fun createMediaDetailMessage(mediaItem: MediaItem): StringBuilder {
-        return StringBuilder().append(getString(R.string.path)).append(": ").append(mediaItem.path)
-            .append("\n")
-            .append(getString(R.string.mimeType)).append(": ").append(mediaItem.mimeType)
-            .append("\n")
-            .append(getString(R.string.resolution)).append(": ").append(mediaItem.width)
-            .append("x").append(mediaItem.height).append("\n")
-            .append(getString(R.string.size)).append(": ").append(mediaItem.size)
+        return StringBuilder().append(getString(R.string.path))
+            .append(": ").append(mediaItem.path).append("\n")
+            .append(getString(R.string.mimeType))
+            .append(": ").append(mediaItem.mimeType).append("\n")
+            .append(getString(R.string.resolution))
+            .append(": ").append(mediaItem.width).append("x").append(mediaItem.height).append("\n")
+            .append(getString(R.string.size))
+            .append(": ").append(mediaItem.size)
     }
 
     private fun showMediaInformationDialog(mediaItem: MediaItem) {

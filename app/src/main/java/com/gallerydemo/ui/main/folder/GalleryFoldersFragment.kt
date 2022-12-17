@@ -36,7 +36,6 @@ class GalleryFoldersFragment :
     }
     private val gridItemDecoration: GalleryEqualGapItemDecoration by lazy {
         GalleryEqualGapItemDecoration(
-            resources.getInteger(R.integer.media_grid_span_count),
             resources.getDimension(R.dimen.grid_media_item_spacing).toInt()
         )
     }
@@ -86,7 +85,7 @@ class GalleryFoldersFragment :
         }
     }
 
-    private fun setSpanLookup() {
+    private fun setGridSpanLookup() {
         val gridLayoutManager = getGridLayoutManager()
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -103,7 +102,7 @@ class GalleryFoldersFragment :
         updateFoldersRVLayoutManager(viewModel.folderModeObservable.getChecked())
         bindings.rvFolders.apply {
             if (foldersAdapter.isGridView) {
-                setSpanLookup()
+                setGridSpanLookup()
             }
             adapter = foldersAdapter
         }
