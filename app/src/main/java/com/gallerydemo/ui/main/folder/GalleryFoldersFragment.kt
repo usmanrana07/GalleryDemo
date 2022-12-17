@@ -54,7 +54,9 @@ class GalleryFoldersFragment :
 
         setUpRecyclerView()
         subscribeLiveDataObserver()
-        viewModel.fetchGalleryMedia(requireContext().contentResolver)
+        viewModel.fetchGalleryMedia(
+            contentResolverProvider = { requireContext().contentResolver },
+            stringProvider = { getString(it) })
     }
 
     private fun getGridLayoutManager(): GridLayoutManager {

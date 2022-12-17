@@ -9,6 +9,7 @@ import com.gallerydemo.ui.base.BaseViewModel
 import com.gallerydemo.ui.main.TOGGLE_TO_GRID_VIEW
 import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.utils.State
+import com.gallerydemo.utils.StringResProvider
 import com.gallerydemo.utils.observable.FoldersModeObservable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -30,12 +31,26 @@ class GalleryFoldersViewModel @Inject constructor(private val repository: Galler
 
     fun getFoldersLiveData(): LiveData<List<GalleryFolder>> = _foldersLiveData
 
-    fun fetchGalleryMedia(contentResolver: ContentResolver) {
+    /**
+     * This function first checks that if data is already loaded then on recreate of view if we call
+     * this method again then it returns until user wants to forceRefresh.
+     * We've used lambdas to get string or contentResolver because we don't have useless initialization
+     * before passing the return guard.
+     */
+    fun fetchGalleryMedia(
+        contentResolverProvider: () -> ContentResolver,
+        stringProvider: StringResProvider,
+        forceRefresh: Boolean = false
+    ) {
         _foldersLiveData.value?.takeUnless { it.isEmpty() }?.let {
-            return // we already have loaded data
+            if (!forceRefresh)
+                return // we already have loaded data
         }
         viewModelScope.launch {
-            repository.loadMediaFromStorage(contentResolver).collectLatest { apiState ->
+            repository.loadMediaFromStorage(
+                contentResolver = contentResolverProvider(),
+                stringProvider = stringProvider
+            ).collectLatest { apiState ->
                 when (apiState) {
                     is State.Loading -> isLoading.postValue(true)
                     is State.Success -> {

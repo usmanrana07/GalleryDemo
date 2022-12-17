@@ -4,12 +4,10 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import com.gallerydemo.R
 import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.data.local.models.MediaItem
-import com.gallerydemo.utils.GALLERY_IMAGE_AND_VIDEOS
-import com.gallerydemo.utils.GALLERY_VIDEO
-import com.gallerydemo.utils.GalleryModes
-import com.gallerydemo.utils.State
+import com.gallerydemo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,11 +19,12 @@ class GalleryRepository @Inject constructor() {
 
     fun loadMediaFromStorage(
         contentResolver: ContentResolver,
-        @GalleryModes galleryMode: Int = GALLERY_IMAGE_AND_VIDEOS
+        @GalleryModes galleryMode: Int = GALLERY_IMAGE_AND_VIDEOS,
+        stringProvider: StringResProvider
     ): Flow<State<List<GalleryFolder>>> {
         return flow {
             emit(State.Loading)
-            val data = executeContentResolver(contentResolver, galleryMode)
+            val data = executeContentResolver(contentResolver, galleryMode, stringProvider)
             if (data != null)
                 emit(State.Success(data))
             else
@@ -60,9 +59,14 @@ class GalleryRepository @Inject constructor() {
         MediaStore.Images.Media.BUCKET_DISPLAY_NAME
     )
 
+    /**
+     * This function is to execute query of contentResolver, handle and parse response and return
+     * list of gallery media folders or null in case of some exception
+     */
     private fun executeContentResolver(
         contentResolver: ContentResolver,
-        @GalleryModes galleryMode: Int
+        @GalleryModes galleryMode: Int,
+        stringProvider: StringResProvider
     ): List<GalleryFolder>? {
         return kotlin.runCatching {
             val folders = mutableListOf<GalleryFolder>()
@@ -79,11 +83,24 @@ class GalleryRepository @Inject constructor() {
                 "$orderBy DESC"
             )
             if (cursor != null) {
-                val foldersMap = mutableMapOf<String, GalleryFolder>()
-                val allImageMedia = mutableListOf<MediaItem>()
-                val allVideoMedia = mutableListOf<MediaItem>()
+                val foldersMap =
+                    mutableMapOf<String, GalleryFolder>() // key is folderName here we can group media by folder names
+                val allImageMedia: MutableList<MediaItem> by lazy { mutableListOf() }
+                val allVideoMedia: MutableList<MediaItem> by lazy { mutableListOf() }
+                val canAddImages =
+                    galleryMode != GALLERY_VIDEO // if not restricted to have videos only
+                val canAddVideos =
+                    galleryMode != GALLERY_IMAGE // if not restricted to have images only
                 while (cursor.moveToNext()) {
                     cursorToGalleryMedia(cursor)?.let { (folderName, mediaItem) ->
+
+                        if (canAddVideos && mediaItem.isVideo)
+                            allVideoMedia.add(mediaItem)
+                        else if (canAddImages && !mediaItem.isVideo)
+                            allImageMedia.add(mediaItem)
+
+                        /* if has folder model already added then append media to that, else create
+                        a new folder and add media into that */
                         foldersMap.getOrElse(folderName) {
                             foldersMap.put(
                                 folderName,
@@ -91,20 +108,21 @@ class GalleryRepository @Inject constructor() {
                             )
                         }?.mediaList?.add(mediaItem)
 
-                        if (mediaItem.isVideo)
-                            allVideoMedia.add(mediaItem)
-                        else
-                            allImageMedia.add(mediaItem)
                     }
                 }
-                folders.add(GalleryFolder("All Images", allImageMedia))
-                folders.add(GalleryFolder("All Videos", allVideoMedia))
+                if (canAddImages)
+                    folders.add(GalleryFolder(stringProvider(R.string.all_images), allImageMedia))
+                if (canAddVideos)
+                    folders.add(GalleryFolder(stringProvider(R.string.all_videos), allVideoMedia))
                 folders.addAll(foldersMap.values)
             }
             folders
         }.getOrNull()
     }
 
+    /**
+     * This function will parse cursor to MediaItem and return its folder name along with it
+     */
     private fun cursorToGalleryMedia(cursor: Cursor?): Pair<String, MediaItem>? {
         return cursor?.let {
             kotlin.runCatching {
