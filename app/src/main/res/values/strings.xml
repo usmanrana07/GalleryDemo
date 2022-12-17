@@ -16,6 +16,6 @@
     <string name="ok">OK</string>
     <string name="path">Path</string>
     <string name="mimeType">MimeType</string>
-    <string name="resolutin">Resolution</string>
+    <string name="resolution">Resolution</string>
     <string name="size">Size</string>
 </resources>

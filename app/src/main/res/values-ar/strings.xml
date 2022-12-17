@@ -15,6 +15,6 @@
     <string name="ok">حسنا</string>
     <string name="path">مسار</string>
     <string name="mimeType">نوع التمثيل الصامت</string>
-    <string name="resolutin">الدقة</string>
+    <string name="resolution">الدقة</string>
     <string name="size">بحجم</string>
 </resources>
