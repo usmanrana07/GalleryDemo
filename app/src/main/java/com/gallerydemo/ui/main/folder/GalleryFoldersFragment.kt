@@ -17,6 +17,7 @@ import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
 import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapterInterface
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
+import com.gallerydemo.utils.callback.StringResProvider
 import com.gallerydemo.utils.printLog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -56,7 +57,12 @@ class GalleryFoldersFragment :
         subscribeLiveDataObserver()
         viewModel.fetchGalleryMedia(
             contentResolverProvider = { requireContext().contentResolver },
-            stringProvider = { getString(it) })
+            stringProvider = object : StringResProvider {
+                override fun getString(resId: Int): String {
+                    return this@GalleryFoldersFragment.getString(resId)
+                }
+
+            })
     }
 
     private fun getGridLayoutManager(): GridLayoutManager {

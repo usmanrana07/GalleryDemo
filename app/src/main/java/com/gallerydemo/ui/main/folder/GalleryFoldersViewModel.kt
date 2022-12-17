@@ -9,7 +9,7 @@ import com.gallerydemo.ui.base.BaseViewModel
 import com.gallerydemo.ui.main.TOGGLE_TO_GRID_VIEW
 import com.gallerydemo.ui.main.TOGGLE_TO_LINEAR_VIEW
 import com.gallerydemo.utils.State
-import com.gallerydemo.utils.StringResProvider
+import com.gallerydemo.utils.callback.StringResProvider
 import com.gallerydemo.utils.observable.FoldersModeObservable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest

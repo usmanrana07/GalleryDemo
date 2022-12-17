@@ -8,6 +8,7 @@ import com.gallerydemo.R
 import com.gallerydemo.data.local.models.GalleryFolder
 import com.gallerydemo.data.local.models.MediaItem
 import com.gallerydemo.utils.*
+import com.gallerydemo.utils.callback.StringResProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -111,9 +112,19 @@ class GalleryRepository @Inject constructor() {
                     }
                 }
                 if (canAddImages)
-                    folders.add(GalleryFolder(stringProvider(R.string.all_images), allImageMedia))
+                    folders.add(
+                        GalleryFolder(
+                            stringProvider.getString(R.string.all_images),
+                            allImageMedia
+                        )
+                    )
                 if (canAddVideos)
-                    folders.add(GalleryFolder(stringProvider(R.string.all_videos), allVideoMedia))
+                    folders.add(
+                        GalleryFolder(
+                            stringProvider.getString(R.string.all_videos),
+                            allVideoMedia
+                        )
+                    )
                 folders.addAll(foldersMap.values)
             }
             folders
