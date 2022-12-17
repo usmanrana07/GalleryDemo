@@ -109,7 +109,7 @@ class MediaListFragment :
             .append("\n")
             .append(getString(R.string.mimeType)).append(": ").append(mediaItem.mimeType)
             .append("\n")
-            .append(getString(R.string.resolutin)).append(": ").append(mediaItem.width)
+            .append(getString(R.string.resolution)).append(": ").append(mediaItem.width)
             .append("x").append(mediaItem.height).append("\n")
             .append(getString(R.string.size)).append(": ").append(mediaItem.size)
     }
