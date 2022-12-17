@@ -54,10 +54,10 @@ class GalleryFoldersViewModel @Inject constructor(private val repository: Galler
                 when (apiState) {
                     is State.Loading -> isLoading.postValue(true)
                     is State.Success -> {
-                        isLoading.postValue(false)
                         apiState.data.let {
                             _foldersLiveData.postValue(it)
                         }
+                        isLoading.postValue(false)
                     }
                     is State.Failure -> isLoading.postValue(false)
                 }
