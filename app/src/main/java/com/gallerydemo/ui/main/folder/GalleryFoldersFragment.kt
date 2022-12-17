@@ -18,7 +18,6 @@ import com.gallerydemo.ui.main.folder.adapter.GalleryFoldersAdapter
 import com.gallerydemo.utils.GalleryEqualGapItemDecoration
 import com.gallerydemo.utils.callback.OnItemClickCallback
 import com.gallerydemo.utils.callback.StringResProvider
-import com.gallerydemo.utils.printLog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -87,20 +86,24 @@ class GalleryFoldersFragment :
         }
     }
 
+    private fun setSpanLookup() {
+        val gridLayoutManager = getGridLayoutManager()
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when {
+                    foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
+                    else -> 1
+                }
+            }
+        }
+    }
+
     private fun setUpRecyclerView() {
         foldersAdapter.onItemClickCallback = this@GalleryFoldersFragment
         updateFoldersRVLayoutManager(viewModel.folderModeObservable.getChecked())
         bindings.rvFolders.apply {
             if (foldersAdapter.isGridView) {
-                val gridLayoutManager = getGridLayoutManager()
-                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return when {
-                            foldersAdapter.isListEmpty -> gridLayoutManager.spanCount
-                            else -> 1
-                        }
-                    }
-                }
+                setSpanLookup()
             }
             adapter = foldersAdapter
         }
@@ -108,17 +111,15 @@ class GalleryFoldersFragment :
 
     private fun subscribeLiveDataObserver() {
         viewModel.getFoldersLiveData().observe(viewLifecycleOwner) {
-            printLog("usm_test_folder", "subscribeLiveDataObserver: size= ${it.size}")
             foldersAdapter.setData(it)
         }
     }
 
     override fun onEventReceived(event: Int) {
-        when (event) {
-            TOGGLE_TO_LINEAR_VIEW -> updateFoldersRVLayoutManager(true)
-            TOGGLE_TO_GRID_VIEW -> updateFoldersRVLayoutManager(false)
-            else -> {}
-        }
+        if (event == TOGGLE_TO_LINEAR_VIEW)
+            updateFoldersRVLayoutManager(true)
+        else if (event == TOGGLE_TO_GRID_VIEW)
+            updateFoldersRVLayoutManager(false)
     }
 
     private fun updateFoldersRVLayoutManager(showLinear: Boolean) {
@@ -129,8 +130,8 @@ class GalleryFoldersFragment :
             bindings.rvFolders.addItemDecoration(gridItemDecoration)
             getGridLayoutManager()
         }
-        if (bindings.rvFolders.layoutManager != layoutManager) bindings.rvFolders.layoutManager =
-            layoutManager
+        if (bindings.rvFolders.layoutManager != layoutManager)
+            bindings.rvFolders.layoutManager = layoutManager
         foldersAdapter.isGridView = !showLinear
     }
 
