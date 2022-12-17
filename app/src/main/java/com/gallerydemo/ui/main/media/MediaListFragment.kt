@@ -115,15 +115,15 @@ class MediaListFragment :
     }
 
     private fun showMediaInformationDialog(mediaItem: MediaItem) {
-
-        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.detail))
-            .setMessage(createMediaDetailMessage(mediaItem))
-            .setPositiveButton(R.string.ok) { dialog, _ ->
-                dialog.dismiss()
-            }
-        alertDialog.setCancelable(false)
-        alertDialog.show()
+        context?.let {
+            val alertDialog: AlertDialog.Builder = AlertDialog.Builder(it)
+                .setTitle(getString(R.string.detail))
+                .setMessage(createMediaDetailMessage(mediaItem))
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    dialog.dismiss()
+                }
+            alertDialog.show()
+        }
     }
 
 }
