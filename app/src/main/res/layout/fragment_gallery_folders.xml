@@ -29,14 +29,16 @@
             android:paddingVertical="@dimen/default_spacing"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_folder"
                 android:text="@string/folders"
                 android:textColor="@color/title"
                 android:textSize="@dimen/top_title_text"
                 android:textStyle="bold"
+                android:drawablePadding="@dimen/small_spacing"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@+id/toggleFoldersMode"
                 app:layout_constraintHorizontal_bias="0"
