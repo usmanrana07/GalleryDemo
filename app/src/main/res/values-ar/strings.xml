@@ -4,7 +4,8 @@
     <string name="desc_gallery_permission">يرجى السماح لنا بالوصول إلى معرض الصور الخاص بك حتى نتمكن من عرض الوسائط لك هنا. ستكون قادرًا على عرض جميع المجلدات والصور أو مقاطع الفيديو الموجودة بداخلها.</string>
     <string name="allow">السماح</string>
     <string name="content_description">ظفري</string>
-    <string name="empty_list">لا توجد وسائط متاحة</string>
+    <string name="empty_folders_list">المعرض فارغ</string>
+    <string name="empty_media_list">لا توجد وسائط متاحة</string>
     <string name="message_open_permissions_setting">يرجى تمكين الأذونات من الإعدادات.</string>
     <string name="settings">الإعدادات</string>
     <string name="cancel">إلغاء</string>
