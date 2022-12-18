@@ -6,6 +6,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.gallerydemo.BR
+import com.gallerydemo.ui.main.folder.adapter.EmptyItemViewModel
 
 abstract class BaseRecyclerViewAdapter<T : BaseViewHolder> : RecyclerView.Adapter<T>() {
 
@@ -38,10 +40,11 @@ abstract class BaseRecyclerViewAdapter<T : BaseViewHolder> : RecyclerView.Adapte
     }
 
     protected class EmptyItemViewHolder<VB : ViewDataBinding>(
-        binding: VB
+        private val binding: VB,
+        private val message: String
     ) : BaseViewHolder(binding.root) {
         override fun onBind(position: Int) {
-
+            binding.setVariable(BR.viewModel, EmptyItemViewModel(message))
         }
     }
 

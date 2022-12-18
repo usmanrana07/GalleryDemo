@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.data.local.models.GalleryFolder
-import com.gallerydemo.databinding.ItemFoldersEmptyViewBinding
+import com.gallerydemo.databinding.ItemEmptyListViewBinding
 import com.gallerydemo.databinding.ItemGridFolderViewBinding
 import com.gallerydemo.databinding.ItemLinearFolderViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
@@ -85,11 +85,14 @@ class GalleryFoldersAdapter @Inject constructor() : BaseRecyclerViewAdapter<Base
     }
 
     override fun createEmptyItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        val itemBinding: ItemFoldersEmptyViewBinding = bindRecyclerViewItem(
+        val itemBinding: ItemEmptyListViewBinding = bindRecyclerViewItem(
             parent,
-            R.layout.item_folders_empty_view
+            R.layout.item_empty_list_view
         )
-        return EmptyItemViewHolder(itemBinding)
+        return EmptyItemViewHolder(
+            itemBinding,
+            parent.context.getString(R.string.empty_folders_list)
+        )
     }
 
     override fun getItemCount(): Int {

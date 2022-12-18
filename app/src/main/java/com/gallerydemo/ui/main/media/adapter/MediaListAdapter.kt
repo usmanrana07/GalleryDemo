@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.gallerydemo.BR
 import com.gallerydemo.R
 import com.gallerydemo.data.local.models.MediaItem
-import com.gallerydemo.databinding.ItemFoldersEmptyViewBinding
+import com.gallerydemo.databinding.ItemEmptyListViewBinding
 import com.gallerydemo.databinding.ItemMediaViewBinding
 import com.gallerydemo.databinding.ItemVideoViewBinding
 import com.gallerydemo.ui.base.BaseRecyclerViewAdapter
@@ -75,11 +75,11 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
     }
 
     override fun createEmptyItemViewHolder(parent: ViewGroup): BaseViewHolder {
-        val itemBinding: ItemFoldersEmptyViewBinding = bindRecyclerViewItem(
+        val itemBinding: ItemEmptyListViewBinding = bindRecyclerViewItem(
             parent,
-            R.layout.item_folders_empty_view
+            R.layout.item_empty_list_view
         )
-        return EmptyItemViewHolder(itemBinding)
+        return EmptyItemViewHolder(itemBinding, parent.context.getString(R.string.empty_media_list))
     }
 
     override fun getItemCount(): Int {
@@ -103,7 +103,8 @@ class MediaListAdapter @Inject constructor() : BaseRecyclerViewAdapter<BaseViewH
 
         private fun loadThumbnail(thumbnail: String) {
             Glide.with(ivThumbnail).load(thumbnail)
-                .placeholder(R.drawable.ic_default_thumbnail).sizeMultiplier(0.5f)
+                .placeholder(R.drawable.ic_default_thumbnail)
+                .sizeMultiplier(0.5f)
                 .into(ivThumbnail)
         }
     }

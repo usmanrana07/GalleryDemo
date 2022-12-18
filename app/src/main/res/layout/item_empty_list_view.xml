@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.gallerydemo.ui.main.folder.adapter.EmptyItemViewModel" />
+    </data>
 
     <FrameLayout
         android:id="@+id/cell"
@@ -16,9 +22,10 @@
             android:contentDescription="@string/content_description"
             android:drawableTop="@drawable/ic_photo_library"
             android:drawablePadding="@dimen/small_spacing"
-            android:text="@string/empty_list"
+            android:text="@{viewModel.message}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/title" />
+            android:textColor="@color/title"
+            tools:text="@string/empty_media_list" />
 
     </FrameLayout>
 
